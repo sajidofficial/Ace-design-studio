@@ -8,6 +8,11 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400&display=swap"
     rel="stylesheet" />
+    
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
   <style>
     *,
     *::before,
@@ -1577,24 +1582,19 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
         document.getElementById('unsaved-indicator').classList.remove('visible');
         
-        // Push to local filesystem via Vite middleware
-        fetch('/api/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(saved)
-        })
-        .then(response => response.json())
-        .then(result => {
-          if (result.success) {
-            showToast('✓ Changes saved to index.html successfully', 'success');
-          } else {
-            showToast('✕ Saved to browser, but file sync failed', 'error');
-          }
-        })
-        .catch(err => {
-          // If fetch fails, it's likely not running through Vite
-          showToast('✓ Changes saved to browser storage', 'success');
-        });
+        // Sync to Firebase if configured
+        if (db) {
+          db.collection("content").doc("ace-design").set(saved)
+            .then(() => {
+              showToast('✓ Changes synced to Cloud (Firebase)', 'success');
+            })
+            .catch(err => {
+              console.error("Firebase sync error:", err);
+              showToast('✕ Saved locally, but Cloud sync failed', 'error');
+            });
+        } else {
+          showToast('✓ Saved locally (Firebase not configured)', 'success');
+        }
 
       } catch (e) {
         showToast('✕ Could not save. Check browser storage permissions.', 'error');

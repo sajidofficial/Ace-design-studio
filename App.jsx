@@ -6,16 +6,20 @@ import Hero from './components/Hero'
 import Projects from './components/Projects'
 import About from './components/About'
 import Footer from './components/Footer'
+import { useCMS } from './src/context/CMSContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function App() {
   const cursorRef = useRef(null)
   const followerRef = useRef(null)
+  const { data, loading, error } = useCMS()
 
   useEffect(() => {
     const cursor = cursorRef.current
     const follower = followerRef.current
+
+    if (!cursor || !follower) return
 
     let mouseX = 0
     let mouseY = 0
@@ -61,7 +65,18 @@ function App() {
         el.removeEventListener('mouseleave', onLeave)
       })
     }
-  }, [])
+  }, [loading])
+
+  if (loading) {
+    return (
+      <div className="loader" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#0a0a0a', color: '#c8a96e', fontFamily: 'serif' }}>
+        <div style={{ textAlign: 'center' }}>
+          <h1 style={{ letterSpacing: '0.4em', fontSize: '1rem', textTransform: 'uppercase' }}>ACE DESIGN STUDIOS</h1>
+          <p style={{ marginTop: '1rem', opacity: 0.6, fontSize: '0.7rem', letterSpacing: '0.2em' }}>SECURE CLOUD SYNC...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="app">
