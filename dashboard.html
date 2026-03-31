@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ace Design Studios — Content Dashboard</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0d0d0d;
+      --panel: #141414;
+      --panel2: #1a1a1a;
+      --border: rgba(255, 255, 255, 0.07);
+      --border2: rgba(255, 255, 255, 0.12);
+      --accent: #c8a96e;
+      --accent-dim: rgba(200, 169, 110, 0.18);
+      --text: #f0f0eb;
+      --text-dim: rgba(240, 240, 235, 0.55);
+      --text-faint: rgba(240, 240, 235, 0.28);
+      --red: #e05555;
+      --green: #5cb85c;
+      --sidebar-w: 220px;
+      --header-h: 64px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      z-index: 100;
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-brand-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .header-brand-logo span {
+      color: var(--accent);
+    }
+
+    .header-badge {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 3px 10px;
+      border: 1px solid rgba(200, 169, 110, 0.3);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.55rem 1.25rem;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-ghost {
+      color: var(--text-dim);
+      border-color: var(--border2);
+      background: transparent;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-accent {
+      color: var(--bg);
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .btn-accent:hover {
+      background: #d4b87a;
+    }
+
+    .btn-danger {
+      color: var(--red);
+      border-color: rgba(224, 85, 85, 0.3);
+      background: transparent;
+    }
+
+    .btn-danger:hover {
+      background: rgba(224, 85, 85, 0.1);
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: flex;
+      padding-top: var(--header-h);
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: var(--header-h);
+      bottom: 0;
+      left: 0;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1.5rem 0;
+    }
+
+    .sidebar-section {
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-heading {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding: 0.75rem 1.5rem 0.4rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 1.5rem;
+      text-decoration: none;
+      color: var(--text-dim);
+      transition: all 0.2s;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 400;
+      border-left: 2px solid transparent;
+    }
+
+    .sidebar-link:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .sidebar-link.active {
+      color: var(--accent);
+      background: var(--accent-dim);
+      border-left-color: var(--accent);
+    }
+
+    .sidebar-icon {
+      font-size: 0.9rem;
+      width: 16px;
+      text-align: center;
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .unsaved-indicator {
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .unsaved-indicator.visible {
+      display: flex;
+    }
+
+    .unsaved-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.4
+      }
+    }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 2rem 2.5rem 4rem;
+      max-width: 900px;
+    }
+
+    /* ── SECTIONS ── */
+    .form-section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      scroll-margin-top: calc(var(--header-h) + 1.5rem);
+    }
+
+    .form-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .form-section-header:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .form-section-icon {
+      font-size: 1rem;
+    }
+
+    .form-section-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .form-section-chevron {
+      color: var(--text-faint);
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+
+    .form-section.collapsed .form-section-chevron {
+      transform: rotate(-90deg);
+    }
+
+    .form-section-body {
+      padding: 1.75rem;
+    }
+
+    .form-section.collapsed .form-section-body {
+      display: none;
+    }
+
+    /* ── FORM FIELDS ── */
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+
+    .field-hint {
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      margin-top: 0.3rem;
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: 300;
+    }
+
+    .field-input,
+    .field-textarea,
+    .field-select {
+      width: 100%;
+      background: var(--panel2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      padding: 0.65rem 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+
+    .field-input:focus,
+    .field-textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .field-textarea {
+      min-height: 90px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .field-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ── IMAGE FIELD ── */
+    .image-field {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .image-field-inputs {
+      flex: 1;
+    }
+
+    .image-preview {
+      width: 80px;
+      height: 60px;
+      flex-shrink: 0;
+      background: var(--panel2);
+      border: 1px solid var(--border2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-preview-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-faint);
+      font-size: 1.25rem;
+    }
+
+    /* ── CARD GROUP ── */
+    .card-group {
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .card-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .card-group-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .card-group-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      min-width: 28px;
+    }
+
+    .card-group-name {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .card-group-body {
+      padding: 1rem;
+    }
+
+    .card-group.collapsed .card-group-body {
+      display: none;
+    }
+
+    .card-group.collapsed .form-section-chevron {
+      transform: rotate(-90deg);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    /* ── SLIDE TABS ── */
+    .slide-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+    }
+
+    .slide-tab {
+      flex: 1;
+      padding: 0.55rem;
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--text-faint);
+      background: transparent;
+      border: none;
+      border-right: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .slide-tab:last-child {
+      border-right: none;
+    }
+
+    .slide-tab.active {
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .slide-panel {
+      display: none;
+    }
+
+    .slide-panel.active {
+      display: block;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9999;
+      padding: 0.9rem 1.5rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #toast.success {
+      background: #1a2a1a;
+      border: 1px solid #3a5c3a;
+      color: #7ecf7e;
+    }
+
+    #toast.error {
+      background: #2a1a1a;
+      border: 1px solid #5c3a3a;
+      color: #cf7e7e;
+    }
+
+    /* ── STAT FIELDS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-box {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      padding: 1rem;
+    }
+
+    .stat-box-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ── NAV LINKS ── */
+    .nav-links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-link-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: none;
+      color: var(--text-faint);
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.5rem;
+    }
+
+    .btn-icon:hover {
+      color: var(--red);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-brand">
+      <div class="header-brand-logo">ACE <span>D</span>ESIGN STUDIOS</div>
+      <div class="header-badge">Content Manager</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-danger" onclick="resetToDefaults()">↺ Reset</button>
+      <a class="btn btn-ghost" href="index.html" target="_blank">↗ Preview Site</a>
+      <button class="btn btn-accent" onclick="saveAll()">✓ Save Changes</button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Sections</div>
+        <a class="sidebar-link active" href="javascript:void(0)" onclick="goToSection('s-brand')" data-target="s-brand">
+          <span class="sidebar-icon">◆</span> Brand
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-seo')" data-target="s-seo">
+          <span class="sidebar-icon">🔍</span> SEO & Social
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-nav')" data-target="s-nav">
+          <span class="sidebar-icon">☰</span> Navigation
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-hero')" data-target="s-hero">
+          <span class="sidebar-icon">▣</span> Hero Slides
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-projects')" data-target="s-projects">
+          <span class="sidebar-icon">⊞</span> Projects
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-about')" data-target="s-about">
+          <span class="sidebar-icon">◉</span> About
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-contact')" data-target="s-contact">
+          <span class="sidebar-icon">✉</span> Contact
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-testimonials')" data-target="s-testimonials">
+          <span class="sidebar-icon">★</span> Testimonials
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-blog')" data-target="s-blog">
+          <span class="sidebar-icon">✍</span> Blog
+        </a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goToSection('s-footer')" data-target="s-footer">
+          <span class="sidebar-icon">▬</span> Footer
+        </a>
+      </div>
+      <div class="sidebar-footer">
+        <div class="unsaved-indicator" id="unsaved-indicator">
+          <span class="unsaved-dot"></span>
+          Unsaved changes
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- ── BRAND ── -->
+      <div class="form-section" id="s-brand">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">◆</span>
+          <span class="form-section-title">Brand Identity</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Company Name (Navbar)</label>
+              <input class="field-input" id="f-brand-logo" type="text" placeholder="ACE DESIGN STUDIOS" />
+              <div class="field-hint">Fallback text if no image is provided</div>
+            </div>
+            <div class="field">
+              <label class="field-label">Footer Logo Text</label>
+              <input class="field-input" id="f-footer-logo" type="text" placeholder="ACE DESIGN STUDIOS" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Logo Image URL</label>
+            <input class="field-input" id="f-brand-logo-img" type="text" placeholder="./logo.png or https://..." />
+            <div class="field-hint">Overrides the text with your uploaded image. Just put the image file in the same folder and type its name!</div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+               <label class="field-label">Header Logo Size</label>
+               <input class="field-input" id="f-brand-logo-height" type="text" placeholder="110px" />
+            </div>
+            <div class="field">
+               <label class="field-label">Footer Logo Size</label>
+               <input class="field-input" id="f-footer-logo-height" type="text" placeholder="80px" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Meta Description (SEO)</label>
+            <input class="field-input" id="f-meta-desc" type="text"
+              placeholder="Ace Design Studios is a luxury interior design firm..." />
+            <div class="field-hint">Shown in Google search results and social previews</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SEO & SOCIAL ── -->
+      <div class="form-section" id="s-seo">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">🔍</span>
+          <span class="form-section-title">SEO & Social Sharing</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field">
+            <label class="field-label">Meta Keywords (comma separated)</label>
+            <input class="field-input" id="f-seo-keywords" type="text" placeholder="interior design, luxury homes, bespoke interiors" />
+          </div>
+          <div class="field">
+            <label class="field-label">Social Sharing Image URL</label>
+            <div class="image-field">
+              <input class="field-input" id="f-seo-image" type="text" placeholder="https://images.unsplash.com/..." 
+                oninput="updateImgPreview('seo-image', this.value)" />
+              <div class="image-preview" id="prev-seo-image"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Canonical URL</label>
+            <input class="field-input" id="f-seo-canonical" type="text" placeholder="https://acedesignstudios.com" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ── NAVIGATION ── -->
+      <div class="form-section" id="s-nav">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">☰</span>
+          <span class="form-section-title">Navigation</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field">
+            <label class="field-label">Nav Links — Text &amp; Anchor</label>
+            <div class="field-hint" style="margin-bottom:0.75rem;">Left column = link label, right column = scroll
+              target (e.g. #projects)</div>
+            <div class="nav-links-list" id="nav-links-container">
+              <!-- Nav links injected by JS -->
+            </div>
+            <button class="btn btn-ghost" style="margin-top:1rem; font-size:0.65rem; padding:0.4rem 0.8rem;"
+              onclick="addNavLink()">+ Add Link</button>
+          </div>
+          <hr class="divider" />
+          <div class="field">
+            <label class="field-label">CTA Button Label</label>
+            <input class="field-input" id="f-cta-text" type="text" placeholder="Contact Us" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ── HERO ── -->
+      <div class="form-section" id="s-hero">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">▣</span>
+          <span class="form-section-title">Hero Section</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Eyebrow Line</label>
+              <input class="field-input" id="f-hero-eyebrow" type="text" placeholder="Est. 2014 — London & Paris" />
+            </div>
+            <div class="field">
+              <label class="field-label">Primary CTA Button</label>
+              <input class="field-input" id="f-hero-cta1" type="text" placeholder="View Spaces" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Headline Line 1</label>
+              <input class="field-input" id="f-hero-title1" type="text" placeholder="Living" />
+            </div>
+            <div class="field">
+              <label class="field-label">Headline Line 2 (italic)</label>
+              <input class="field-input" id="f-hero-title2" type="text" placeholder="as" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Headline Line 3</label>
+              <input class="field-input" id="f-hero-title3" type="text" placeholder="Art" />
+            </div>
+            <div class="field">
+              <label class="field-label">Headline Font Size</label>
+              <input class="field-input" id="f-hero-fontsize" type="text" placeholder="clamp(4.5rem, 9vw, 9.5rem)" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Subtitle / Tagline</label>
+            <textarea class="field-textarea" id="f-hero-subtitle"
+              placeholder="We sculpt interiors that breathe..."></textarea>
+          </div>
+
+          <hr class="divider" />
+          <label class="field-label" style="margin-bottom:0.75rem;">Background Slides (5 Images)</label>
+
+          <div class="slide-tabs">
+            <button class="slide-tab active" onclick="switchSlide(0)">Slide 1</button>
+            <button class="slide-tab" onclick="switchSlide(1)">Slide 2</button>
+            <button class="slide-tab" onclick="switchSlide(2)">Slide 3</button>
+            <button class="slide-tab" onclick="switchSlide(3)">Slide 4</button>
+            <button class="slide-tab" onclick="switchSlide(4)">Slide 5</button>
+          </div>
+
+          <div id="slide-panels">
+            <!-- Slide panels injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROJECTS ── -->
+      <div class="form-section" id="s-projects">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">⊞</span>
+          <span class="form-section-title">Projects / Portfolio</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Section Label</label>
+              <input class="field-input" id="f-proj-label" type="text" placeholder="Featured Commissions" />
+            </div>
+            <div class="field">
+              <label class="field-label">Section Title</label>
+              <input class="field-input" id="f-proj-title" type="text" placeholder="Spaces & Interiors" />
+            </div>
+          </div>
+          <hr class="divider" />
+          <div id="project-cards-container">
+            <!-- Project cards injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ABOUT ── -->
+      <div class="form-section" id="s-about">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">◉</span>
+          <span class="form-section-title">About / Studio</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Eyebrow</label>
+              <input class="field-input" id="f-about-eyebrow" type="text" placeholder="The Studio" />
+            </div>
+            <div class="field">
+              <label class="field-label">CTA Button</label>
+              <input class="field-input" id="f-about-cta" type="text" placeholder="Design a Space" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Title Line 1</label>
+              <input class="field-input" id="f-about-title1" type="text" placeholder="Design is an" />
+            </div>
+            <div class="field">
+              <label class="field-label">Title Line 2 (italic)</label>
+              <input class="field-input" id="f-about-title2" type="text" placeholder="intimate gesture" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Body Text</label>
+            <textarea class="field-textarea" id="f-about-text" style="min-height:120px;"
+              placeholder="Ace Design Studios is a luxury interior design firm..."></textarea>
+          </div>
+          <hr class="divider" />
+          <label class="field-label" style="margin-bottom:0.75rem;">Statistics</label>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-box-label">Stat 1</div>
+              <div class="field" style="margin-bottom:0.5rem;">
+                <label class="field-label">Number</label>
+                <input class="field-input" id="f-stat1-num" type="text" placeholder="68" />
+              </div>
+              <div class="field">
+                <label class="field-label">Label</label>
+                <input class="field-input" id="f-stat1-lbl" type="text" placeholder="Spaces Designed" />
+              </div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-label">Stat 2</div>
+              <div class="field" style="margin-bottom:0.5rem;">
+                <label class="field-label">Number</label>
+                <input class="field-input" id="f-stat2-num" type="text" placeholder="09" />
+              </div>
+              <div class="field">
+                <label class="field-label">Label</label>
+                <input class="field-input" id="f-stat2-lbl" type="text" placeholder="Design Awards" />
+              </div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-label">Stat 3</div>
+              <div class="field" style="margin-bottom:0.5rem;">
+                <label class="field-label">Number</label>
+                <input class="field-input" id="f-stat3-num" type="text" placeholder="12" />
+              </div>
+              <div class="field">
+                <label class="field-label">Label</label>
+                <input class="field-input" id="f-stat3-lbl" type="text" placeholder="Years of Craft" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BLOG ── -->
+      <div class="form-section" id="s-blog">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">✍</span>
+          <span class="form-section-title">Blog</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field">
+            <label class="field-label">Section Label</label>
+            <input class="field-input" id="f-blog-label" type="text" placeholder="Blog" />
+          </div>
+          <div class="field">
+            <label class="field-label">Section Title</label>
+            <input class="field-input" id="f-blog-title" type="text" placeholder="The Art of Bespoke Living" />
+          </div>
+          <div class="field-divider"></div>
+          <div id="blog-posts-container">
+            <!-- Dynamic blog list -->
+          </div>
+          <button class="add-btn" onclick="addBlogPost()">+ Add New Post</button>
+        </div>
+      </div>
+
+      <!-- ── CONTACT ── -->
+      <div class="form-section" id="s-contact">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">✉</span>
+          <span class="form-section-title">Contact</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field">
+            <label class="field-label">Section Title</label>
+            <input class="field-input" id="f-contact-title" type="text" placeholder="Get in Touch" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Email</label>
+              <input class="field-input" id="f-contact-email" type="text" placeholder="studio@acedesign.com" />
+            </div>
+            <div class="field">
+              <label class="field-label">Phone</label>
+              <input class="field-input" id="f-contact-phone" type="text" placeholder="+44 20 7123 4567" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Address</label>
+            <textarea class="field-textarea" id="f-contact-address" style="min-height:80px;"
+              placeholder="123 Design Avenue&#10;London, UK"></textarea>
+          </div>
+          <hr class="divider" />
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Booking Button Label</label>
+              <input class="field-input" id="f-contact-booking-lbl" type="text" placeholder="Book an Appointment" />
+            </div>
+            <div class="field">
+              <label class="field-label">Google Form URL</label>
+              <input class="field-input" id="f-contact-booking-url" type="text"
+                placeholder="https://docs.google.com/forms/..." />
+            </div>
+          </div>
+          <div class="field" style="margin-top:1rem;">
+            <label class="field-label">Google Map Embed URL (src only)</label>
+            <textarea class="field-textarea" id="f-contact-map" style="min-height:60px;"
+              placeholder="Paste the 'src' link from the Google Maps embed code..."></textarea>
+          </div>
+          <p style="font-size:0.6rem; color:var(--white-dim); margin-top:0.4rem;">To get this: Google Maps > Share > Embed a map > Copy ONLY the text inside src="..."</p>
+        </div>
+      </div>
+
+      <!-- ── TESTIMONIALS ── -->
+      <div class="form-section" id="s-testimonials">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">★</span>
+          <span class="form-section-title">Client Testimonials</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Section Label</label>
+              <input class="field-input" id="f-test-label" type="text" placeholder="Client Experiences" />
+            </div>
+            <div class="field">
+              <label class="field-label">Section Title</label>
+              <input class="field-input" id="f-test-title" type="text" placeholder="What Our Clients Say" />
+            </div>
+          </div>
+          <hr class="divider" />
+          <div id="testimonials-container">
+            <!-- Testimonials injected by JS -->
+          </div>
+          <button class="btn btn-ghost" style="margin-top:1rem; font-size:0.65rem; padding:0.4rem 0.8rem;"
+            onclick="addTestimonial()">+ Add Testimonial</button>
+        </div>
+      </div>
+
+      <!-- ── FOOTER ── -->
+      <div class="form-section" id="s-footer">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <span class="form-section-icon">▬</span>
+          <span class="form-section-title">Footer</span>
+          <span class="form-section-chevron">▾</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field">
+            <label class="field-label">Copyright Line</label>
+            <input class="field-input" id="f-footer-copy" type="text"
+              placeholder="© 2026 Ace Design Studios. All rights reserved." />
+          </div>
+          <hr class="divider" />
+          <label class="field-label" style="margin-bottom:0.75rem;">Social / Footer Links</label>
+          <div class="nav-links-list" id="footer-links-container">
+            <!-- Footer links injected by JS -->
+          </div>
+          <button class="btn btn-ghost" style="margin-top:1rem; font-size:0.65rem; padding:0.4rem 0.8rem;"
+            onclick="addFooterLink()">+ Add Link</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'ace_design_content';
+
+    const DEFAULTS = {
+      brand: { 
+        logo: 'ACE DESIGN STUDIOS', 
+        logoImg: '', 
+        logoHeight: '110px',
+        footerLogo: 'ACE DESIGN STUDIOS', 
+        footerLogoHeight: '80px',
+        metaDesc: 'Affordable luxury interior design in Kolkata. 2BHK starting ₹3L. Modern home interiors, turnkey solutions & free consultation. Ace Design Studios: Crafting bespoke living environments.' 
+      },
+      seo: {
+        keywords: 'Affordable luxury interior design in Kolkata, 2BHK starting ₹3L, Modern home interiors, turnkey solutions, free consultation, Ace Design Studios',
+        socialImage: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=80',
+        canonical: 'https://acedesignstudios.com'
+      },
+      blog: {
+        label: 'Blog',
+        title: 'The Art of Bespoke Living',
+        posts: [
+          { date: 'Oct 24, 2025', category: 'Curation', title: 'The Quiet Luxury of Natural Stone', excerpt: 'Exploring the tactile allure of marble and travertine in contemporary minimalist environments.', image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80' },
+          { date: 'Nov 12, 2025', category: 'Studio', title: 'Designing for the Intimate Whisper', excerpt: 'How acoustics and lighting shape the emotional resonant power of a private sanctuary.', image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80' },
+          { date: 'Jan 12, 2026', category: 'Materials', title: 'The Alchemy of Texture', excerpt: 'From the grain of hand-poured concrete to the softness of Mongolian wool, we explore the tactile foundations of soul-stirring spaces.', image: 'https://images.unsplash.com/photo-1615873968403-89e06862597e?w=1200&q=80&auto=format&fit=crop' }
+        ]
+      },
+      nav: {
+        links: [
+          { text: 'Gallery', href: '#projects' },
+          { text: 'Studio', href: '#about' },
+          { text: 'Blog', href: '#blog' },
+          { text: 'Clients', href: '#testimonials' },
+          { text: 'Our location', href: '#contact' }
+        ],
+        cta: 'Contact Us'
+      },
+      hero: {
+        eyebrow: 'Est. 2014 \u2014 London & Paris',
+        title1: 'Living', title2: 'as', title3: 'Art',
+        titleFontSize: 'clamp(4.5rem, 9vw, 9.5rem)',
+        subtitle: 'We sculpt interiors that breathe \u2014 where every surface, texture, and shadow is an act of deliberate beauty.',
+        cta1: 'View Spaces',
+        slides: [
+          { src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&q=90&auto=format&fit=crop', alt: 'Luxury sofa in a minimal contemporary living space' },
+          { src: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=90&auto=format&fit=crop', alt: 'Warm toned luxury interior with bespoke furniture' },
+          { src: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1920&q=90&auto=format&fit=crop', alt: 'Dark moody designer living room with accent lighting' },
+          { src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1920&q=90&auto=format&fit=crop', alt: 'Brown wooden bed frame with white and brown bed linen' },
+          { src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&q=90&auto=format&fit=crop', alt: 'Amber-lit luxury dining room with designer chandelier' }
+        ]
+      },
+      projects: {
+        label: 'Featured Commissions',
+        title: 'Spaces & Interiors',
+        cards: [
+          { name: 'Nocturne Suite', location: 'Salt lake', year: '2025', image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&q=85&auto=format&fit=crop', alt: 'Nocturne Living Suite' },
+          { name: 'Ivory Retreat', location: '8th Arr., Paris', year: '2024', image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&q=85&auto=format&fit=crop', alt: 'Ivory Bedroom Retreat' },
+          { name: 'Obsidian Kitchen', location: 'Tribeca, New York', year: '2024', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=85&auto=format&fit=crop', alt: 'Obsidian Kitchen' },
+          { name: 'Amber Dining', location: 'Jumeirah, Dubai', year: '2023', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&q=85&auto=format&fit=crop', alt: 'Amber Dining Room' }
+        ]
+      },
+      about: {
+        eyebrow: 'The Studio',
+        title1: 'Design is an', title2: 'intimate gesture',
+        text: 'Ace Design Studios is a luxury interior design firm founded on the belief that the spaces we inhabit shape who we become. We craft bespoke environments \u2014 from private residences to boutique hospitality \u2014 where every material choice, every curve of light, every tactile surface, is a considered act of care for the people who live within them.',
+        cta: 'Design a Space',
+        stats: [
+          { number: '68', label: 'Spaces Designed' },
+          { number: '09', label: 'Design Awards' },
+          { number: '12', label: 'Years of Craft' }
+        ]
+      },
+      contact: {
+        title: 'Get in Touch',
+        email: 'studio@acedesign.com',
+        phone: '+44 20 7123 4567',
+        address: '123 Design Avenue\nLondon, UK',
+        bookingLabel: 'Book an Appointment',
+        bookingUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSewpVQ7AguGFv87tN3F5TOVsNR8clWu4ZmHlUfvMlc6vF0ZyA/viewform?usp=publish-editor',
+        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117925.334399277!2d88.2649502!3d22.5354273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f882db4908f667%3A0x43e330e68f6c2cbc!2sKolkata%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1711832100000!5m2!1sen!2sin'
+      },
+      footer: {
+        logo: 'ACE DESIGN STUDIOS',
+        copy: '\u00a9 2026 Ace Design Studios. All rights reserved.',
+        links: [
+          { text: 'Instagram', href: '#' },
+          { text: 'Facebook', href: '#' },
+          { text: 'Houzz', href: '#' }
+        ]
+      },
+      testimonials: {
+        label: 'Client Experiences',
+        title: 'What Our Clients Say',
+        items: [
+          { text: 'Ace Design Studios completely transformed our 3BHK into a luxury space. Every detail feels premium and personalized.', name: 'Dr. Arjun Mehta', role: 'Kolkata' },
+          { text: 'The team understood our lifestyle perfectly. The result feels like a 5-star hotel at home.', name: 'Riya Sharma', role: 'Business Owner' },
+          { text: 'From concept to execution, everything was seamless. Worth every rupee.', name: 'Amit Agarwal', role: 'Entrepreneur' }
+        ]
+      }
+    };
+
+    let data = JSON.parse(JSON.stringify(DEFAULTS));
+
+    /* ── INIT ── */
+    function init() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          data = { ...JSON.parse(JSON.stringify(DEFAULTS)), ...parsed };
+        } catch (e) { data = JSON.parse(JSON.stringify(DEFAULTS)); }
+      }
+      buildNavLinks();
+      buildFooterLinks();
+      buildSlidePanels();
+      buildProjectCards();
+      buildTestimonials();
+      populateFields();
+      watchChanges();
+    }
+
+    /* ── BUILD NAV LINKS ── */
+    function syncNavLinks() {
+      const container = document.getElementById('nav-links-container');
+      if (!container) return;
+      const rows = container.querySelectorAll('.nav-link-row');
+      data.nav.links = Array.from(rows).map(row => ({
+        text: row.querySelector('.nav-text-input').value,
+        href: row.querySelector('.nav-href-input').value
+      }));
+    }
+
+    function buildNavLinks() {
+      const container = document.getElementById('nav-links-container');
+      container.innerHTML = data.nav.links.map((link, i) => `
+    <div class="nav-link-row">
+      <input class="field-input nav-text-input" type="text" value="${escHtml(link.text)}" placeholder="Link Text" />
+      <input class="field-input nav-href-input" type="text" value="${escHtml(link.href)}" placeholder="#section or URL" />
+      <button class="btn-icon" onclick="removeNavLink(${i})" title="Remove">×</button>
+    </div>
+  `).join('');
+      watchChanges();
+    }
+
+    function addNavLink() {
+      syncNavLinks();
+      data.nav.links.push({ text: 'New Tab', href: '#' });
+      buildNavLinks();
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    function removeNavLink(idx) {
+      syncNavLinks();
+      data.nav.links.splice(idx, 1);
+      buildNavLinks();
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    function syncFooterLinks() {
+      const container = document.getElementById('footer-links-container');
+      if (!container) return;
+      const rows = container.querySelectorAll('.nav-link-row');
+      data.footer.links = Array.from(rows).map(row => ({
+        text: row.querySelector('.nav-text-input').value,
+        href: row.querySelector('.nav-href-input').value
+      }));
+    }
+
+    function buildFooterLinks() {
+      const container = document.getElementById('footer-links-container');
+      container.innerHTML = data.footer.links.map((link, i) => `
+    <div class="nav-link-row">
+      <input class="field-input nav-text-input" type="text" value="${escHtml(link.text)}" placeholder="Link Text" />
+      <input class="field-input nav-href-input" type="text" value="${escHtml(link.href)}" placeholder="URL" />
+      <button class="btn-icon" onclick="removeFooterLink(${i})" title="Remove">×</button>
+    </div>
+  `).join('');
+      watchChanges();
+    }
+
+    function addFooterLink() {
+      syncFooterLinks();
+      data.footer.links.push({ text: 'New Link', href: '#' });
+      buildFooterLinks();
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    function removeFooterLink(idx) {
+      syncFooterLinks();
+      data.footer.links.splice(idx, 1);
+      buildFooterLinks();
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    /* ── BLOG POSTS ── */
+    function buildBlogPosts(posts) {
+      const container = document.getElementById('blog-posts-container');
+      if (!container) return;
+      container.innerHTML = posts.map((p, idx) => `
+        <div class="list-item" style="border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; background: rgba(255,255,255,0.02);">
+          <div class="list-item-header" style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+            <span style="font-size:0.7rem; color:var(--accent); text-transform:uppercase;">Post #${idx + 1}</span>
+            <button class="btn btn-danger" style="font-size:0.6rem; padding:0.2rem 0.6rem;" onclick="removeBlogPost(${idx})">Remove</button>
+          </div>
+          <div class="field">
+            <label class="field-label">Title</label>
+            <input class="field-input b-title" type="text" value="${escHtml(p.title)}" />
+          </div>
+          <div class="field-row" style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="field">
+              <label class="field-label">Category</label>
+              <input class="field-input b-cat" type="text" value="${escHtml(p.category || '')}" />
+            </div>
+            <div class="field">
+              <label class="field-label">Date</label>
+              <input class="field-input b-date" type="text" value="${escHtml(p.date || '')}" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Excerpt</label>
+            <textarea class="field-textarea b-excerpt" style="min-height:60px;">${escHtml(p.excerpt || '')}</textarea>
+          </div>
+          <div class="image-field">
+            <div class="image-field-inputs" style="flex:1;">
+               <label class="field-label">Image URL</label>
+               <input class="field-input b-image" type="text" value="${escHtml(p.image)}" oninput="updateImgPreview('blog-${idx}', this.value)" />
+            </div>
+            <div class="image-preview" id="prev-blog-${idx}">
+               ${p.image ? `<img src="${escHtml(p.image)}" />` : '<span class="image-preview-placeholder">🖼</span>'}
+            </div>
+          </div>
+        </div>
+      `).join('');
+      watchChanges();
+    }
+
+    function addBlogPost() {
+      data.blog.posts = syncBlogPosts();
+      data.blog.posts.push({ date: 'New Date', category: 'New Cat', title: 'New Article', excerpt: '...', image: '' });
+      buildBlogPosts(data.blog.posts);
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    function removeBlogPost(idx) {
+      data.blog.posts = syncBlogPosts();
+      data.blog.posts.splice(idx, 1);
+      buildBlogPosts(data.blog.posts);
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    function syncBlogPosts() {
+      const items = document.querySelectorAll('#blog-posts-container .list-item');
+      return Array.from(items).map(item => ({
+        title: item.querySelector('.b-title').value,
+        category: item.querySelector('.b-cat').value,
+        date: item.querySelector('.b-date').value,
+        excerpt: item.querySelector('.b-excerpt').value,
+        image: item.querySelector('.b-image').value
+      }));
+    }
+
+    /* ── BUILD SLIDE PANELS ── */
+    function buildSlidePanels() {
+      const container = document.getElementById('slide-panels');
+      container.innerHTML = data.hero.slides.map((s, i) => `
+    <div class="slide-panel ${i === 0 ? 'active' : ''}" id="sp-${i}">
+      <div class="image-field">
+        <div class="image-field-inputs">
+          <div class="field" style="margin-bottom:0.5rem;">
+            <label class="field-label">Image URL</label>
+            <input class="field-input" id="f-slide${i}-src" type="text" value="${escHtml(s.src)}" oninput="updateImgPreview('slide${i}',this.value)" placeholder="https://images.unsplash.com/..." />
+          </div>
+          <div class="field">
+            <label class="field-label">Alt Text</label>
+            <input class="field-input" id="f-slide${i}-alt" type="text" value="${escHtml(s.alt)}" placeholder="Description of image" />
+          </div>
+        </div>
+        <div class="image-preview" id="prev-slide${i}">
+          ${s.src ? `<img src="${escHtml(s.src)}" onerror="this.style.display='none'" />` : '<span class="image-preview-placeholder">🖼</span>'}
+        </div>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    /* ── BUILD PROJECT CARDS ── */
+    function buildProjectCards() {
+      const container = document.getElementById('project-cards-container');
+      container.innerHTML = data.projects.cards.map((c, i) => `
+    <div class="card-group" id="pc-${i}">
+      <div class="card-group-header" onclick="toggleCard(${i})">
+        <span class="card-group-num">0${i + 1}</span>
+        <span class="card-group-name" id="pcn-${i}">${escHtml(c.name)}</span>
+        <span class="form-section-chevron">▾</span>
+      </div>
+      <div class="card-group-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Project Name</label>
+            <input class="field-input" id="f-pc${i}-name" type="text" value="${escHtml(c.name)}" oninput="document.getElementById('pcn-${i}').textContent=this.value" />
+          </div>
+          <div class="field">
+            <label class="field-label">Year</label>
+            <input class="field-input" id="f-pc${i}-year" type="text" value="${escHtml(c.year)}" placeholder="2024" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Location</label>
+          <input class="field-input" id="f-pc${i}-location" type="text" value="${escHtml(c.location)}" placeholder="City, Country" />
+        </div>
+        <div class="image-field">
+          <div class="image-field-inputs">
+            <div class="field" style="margin-bottom:0.5rem;">
+              <label class="field-label">Image URL</label>
+              <input class="field-input" id="f-pc${i}-img" type="text" value="${escHtml(c.image)}" oninput="updateImgPreview('pc${i}',this.value)" placeholder="https://images.unsplash.com/..." />
+            </div>
+            <div class="field">
+              <label class="field-label">Alt Text</label>
+              <input class="field-input" id="f-pc${i}-alt" type="text" value="${escHtml(c.alt)}" placeholder="Description" />
+            </div>
+          </div>
+          <div class="image-preview" id="prev-pc${i}">
+            ${c.image ? `<img src="${escHtml(c.image)}" onerror="this.style.display='none'" />` : '<span class="image-preview-placeholder">🖼</span>'}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    /* ── BUILD TESTIMONIALS ── */
+    function syncTestimonials() {
+      const container = document.getElementById('testimonials-container');
+      if (!container) return;
+      const rows = container.querySelectorAll('.testimonial-row');
+      data.testimonials.items = Array.from(rows).map(row => ({
+        text: row.querySelector('.test-text-input').value,
+        name: row.querySelector('.test-name-input').value,
+        role: row.querySelector('.test-role-input').value
+      }));
+    }
+
+    function buildTestimonials() {
+      const container = document.getElementById('testimonials-container');
+      if (!container) return;
+      container.innerHTML = data.testimonials.items.map((t, i) => `
+    <div class="testimonial-row" style="border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; background: rgba(255,255,255,0.02);">
+      <div class="field" style="margin-bottom: 0.75rem;">
+        <label class="field-label">Review Text</label>
+        <textarea class="field-textarea test-text-input" placeholder="Client review..." style="min-height: 60px;">${escHtml(t.text)}</textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Client Name</label>
+          <input class="field-input test-name-input" type="text" value="${escHtml(t.name)}" placeholder="Name" />
+        </div>
+        <div class="field">
+          <label class="field-label">Location / Role</label>
+          <input class="field-input test-role-input" type="text" value="${escHtml(t.role)}" placeholder="Kolkata or CEO" />
+        </div>
+      </div>
+      <button class="btn btn-danger" style="font-size: 0.65rem; margin-top: 0.75rem; padding: 0.35rem 0.8rem;" onclick="removeTestimonial(${i})">Remove Testimonial</button>
+    </div>
+  `).join('');
+      watchChanges();
+    }
+
+    function addTestimonial() {
+      syncTestimonials();
+      data.testimonials.items.push({ text: 'Excellent work!', name: 'New Client', role: 'Location' });
+      buildTestimonials();
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    function removeTestimonial(idx) {
+      if (data.testimonials.items.length <= 1) {
+        showToast('✕ You must have at least one testimonial', 'error');
+        return;
+      }
+      syncTestimonials();
+      data.testimonials.items.splice(idx, 1);
+      buildTestimonials();
+      document.getElementById('unsaved-indicator').classList.add('visible');
+    }
+
+    /* ── POPULATE FIELDS ── */
+    function populateFields() {
+      const d = data;
+      set('f-brand-logo', d.brand.logo);
+      set('f-brand-logo-img', d.brand.logoImg);
+      set('f-brand-logo-height', d.brand.logoHeight);
+      set('f-footer-logo', d.brand.footerLogo);
+      set('f-footer-logo-height', d.brand.footerLogoHeight);
+      set('f-meta-desc', d.brand.metaDesc);
+
+      set('f-seo-keywords', d.seo?.keywords);
+      set('f-seo-image', d.seo?.socialImage);
+      updateImgPreview('seo-image', d.seo?.socialImage);
+      set('f-seo-canonical', d.seo?.canonical);
+
+      set('f-blog-label', d.blog?.label);
+      set('f-blog-title', d.blog?.title);
+      buildBlogPosts(d.blog?.posts || []);
+
+      set('f-cta-text', d.nav.cta);
+
+      set('f-hero-eyebrow', d.hero.eyebrow);
+      set('f-hero-title1', d.hero.title1);
+      set('f-hero-title2', d.hero.title2);
+      set('f-hero-title3', d.hero.title3);
+      set('f-hero-fontsize', d.hero.titleFontSize);
+      set('f-hero-subtitle', d.hero.subtitle);
+      set('f-hero-cta1', d.hero.cta1);
+
+      set('f-proj-label', d.projects.label);
+      set('f-proj-title', d.projects.title);
+
+      set('f-about-eyebrow', d.about.eyebrow);
+      set('f-about-title1', d.about.title1);
+      set('f-about-title2', d.about.title2);
+      set('f-about-text', d.about.text);
+      set('f-about-cta', d.about.cta);
+
+      set('f-contact-title', d.contact?.title);
+      set('f-contact-email', d.contact?.email);
+      set('f-contact-phone', d.contact?.phone);
+      set('f-contact-address', d.contact?.address);
+      set('f-contact-booking-lbl', d.contact?.bookingLabel);
+      set('f-contact-booking-url', d.contact?.bookingUrl);
+      set('f-contact-map', d.contact?.mapUrl);
+
+      set('f-stat1-num', d.about.stats[0]?.number); set('f-stat1-lbl', d.about.stats[0]?.label);
+      set('f-stat2-num', d.about.stats[1]?.number); set('f-stat2-lbl', d.about.stats[1]?.label);
+      set('f-stat3-num', d.about.stats[2]?.number); set('f-stat3-lbl', d.about.stats[2]?.label);
+
+      set('f-footer-copy', d.footer.copy);
+
+      set('f-test-label', d.testimonials?.label);
+      set('f-test-title', d.testimonials?.title);
+    }
+
+    /* ── COLLECT & SAVE ── */
+    function saveAll() {
+      syncNavLinks();
+      syncFooterLinks();
+      syncTestimonials();
+      const saved = {
+        brand: {
+          logo: get('f-brand-logo'),
+          logoImg: get('f-brand-logo-img'),
+          logoHeight: get('f-brand-logo-height') || '110px',
+          footerLogo: get('f-footer-logo'),
+          footerLogoHeight: get('f-footer-logo-height') || '80px',
+          metaDesc: get('f-meta-desc')
+        },
+        seo: {
+          keywords: get('f-seo-keywords'),
+          socialImage: get('f-seo-image'),
+          canonical: get('f-seo-canonical')
+        },
+        blog: {
+          label: get('f-blog-label'),
+          title: get('f-blog-title'),
+          posts: syncBlogPosts()
+        },
+        nav: {
+          links: data.nav.links,
+          cta: get('f-cta-text')
+        },
+        hero: {
+          eyebrow: get('f-hero-eyebrow'),
+          title1: get('f-hero-title1'),
+          title2: get('f-hero-title2'),
+          title3: get('f-hero-title3'),
+          titleFontSize: get('f-hero-fontsize') || 'clamp(4.5rem, 9vw, 9.5rem)',
+          subtitle: get('f-hero-subtitle'),
+          cta1: get('f-hero-cta1'),
+          slides: Array.from({ length: 5 }, (_, i) => ({
+            src: get(`f-slide${i}-src`),
+            alt: get(`f-slide${i}-alt`)
+          }))
+        },
+        projects: {
+          label: get('f-proj-label'),
+          title: get('f-proj-title'),
+          cards: Array.from({ length: 4 }, (_, i) => ({
+            name: get(`f-pc${i}-name`),
+            location: get(`f-pc${i}-location`),
+            year: get(`f-pc${i}-year`),
+            image: get(`f-pc${i}-img`),
+            alt: get(`f-pc${i}-alt`)
+          }))
+        },
+        about: {
+          eyebrow: get('f-about-eyebrow'),
+          title1: get('f-about-title1'),
+          title2: get('f-about-title2'),
+          text: get('f-about-text'),
+          cta: get('f-about-cta'),
+          stats: [
+            { number: get('f-stat1-num'), label: get('f-stat1-lbl') },
+            { number: get('f-stat2-num'), label: get('f-stat2-lbl') },
+            { number: get('f-stat3-num'), label: get('f-stat3-lbl') }
+          ]
+        },
+        contact: {
+          title: get('f-contact-title'),
+          email: get('f-contact-email'),
+          phone: get('f-contact-phone'),
+          address: get('f-contact-address'),
+          bookingLabel: get('f-contact-booking-lbl'),
+          bookingUrl: get('f-contact-booking-url'),
+          mapUrl: get('f-contact-map')
+        },
+        footer: {
+          logo: get('f-footer-logo') || get('f-brand-logo'),
+          copy: get('f-footer-copy'),
+          links: data.footer.links
+        },
+        testimonials: {
+          label: get('f-test-label'),
+          title: get('f-test-title'),
+          items: data.testimonials.items
+        }
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+        document.getElementById('unsaved-indicator').classList.remove('visible');
+        
+        // Push to local filesystem via Vite middleware
+        fetch('/api/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(saved)
+        })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            showToast('✓ Changes saved to index.html successfully', 'success');
+          } else {
+            showToast('✕ Saved to browser, but file sync failed', 'error');
+          }
+        })
+        .catch(err => {
+          // If fetch fails, it's likely not running through Vite
+          showToast('✓ Changes saved to browser storage', 'success');
+        });
+
+      } catch (e) {
+        showToast('✕ Could not save. Check browser storage permissions.', 'error');
+      }
+    }
+
+    function resetToDefaults() {
+      if (!confirm('Reset all content to defaults? This cannot be undone.')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      data = JSON.parse(JSON.stringify(DEFAULTS));
+      buildNavLinks();
+      buildFooterLinks();
+      buildSlidePanels();
+      buildProjectCards();
+      buildTestimonials();
+      populateFields();
+      showToast('↺ Content reset to defaults', 'success');
+    }
+
+    /* ── HELPERS ── */
+    function set(id, val) { const el = document.getElementById(id); if (el && val != null) el.value = val; }
+    function get(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+    function escHtml(str) { return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function updateImgPreview(key, url) {
+      const box = document.getElementById(`prev-${key}`);
+      if (!box) return;
+      box.innerHTML = url
+        ? `<img src="${escHtml(url)}" onerror="this.style.display='none'" />`
+        : '<span class="image-preview-placeholder">🖼</span>';
+    }
+
+    function switchSlide(idx) {
+      document.querySelectorAll('.slide-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+      document.querySelectorAll('.slide-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+    }
+
+    function toggleSection(header) {
+      header.closest('.form-section').classList.toggle('collapsed');
+    }
+
+    function toggleCard(idx) {
+      document.getElementById(`pc-${idx}`).classList.toggle('collapsed');
+    }
+
+    function goToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.toggle('active', l.dataset.target === id));
+    }
+
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `show ${type}`;
+      setTimeout(() => t.className = type, 3500);
+    }
+
+    function watchChanges() {
+      document.querySelectorAll('.field-input, .field-textarea').forEach(el => {
+        el.addEventListener('input', () => {
+          document.getElementById('unsaved-indicator').classList.add('visible');
+        });
+      });
+    }
+
+    /* ── Ctrl+S shortcut ── */
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveAll(); }
+    });
+
+    init();
+  </script>
+</body>
+
+</html>
