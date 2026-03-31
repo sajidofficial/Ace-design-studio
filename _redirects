@@ -1,5 +1,0 @@
-# Redirect all routes to index.html for SPA support (if needed)
-/* /index.html 200
-
-# Explicitly ensure dashboard is accessible
-/dashboard /dashboard.html 200
